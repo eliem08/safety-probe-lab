@@ -40,7 +40,7 @@ def evaluate(model_id="distilgpt2", output="outputs/probes", device="auto", max_
         answer=tok.decode(y[0][x["input_ids"].shape[1]:],skip_special_tokens=True)
         rows.append({**probe,"response":answer,**heuristic_score(probe["category"],answer)})
     out=Path(output);out.mkdir(parents=True,exist_ok=True)
-    (out/"probe-results.json").write_text(json.dumps({"model_id":model_id,"device":device,"manifest":build_manifest("safety-probe-lab",model_id=model_id,device=device,config={"max_new_tokens":max_new_tokens}),"warning":"Heuristic marker signals are not validated safety scores.", "results":rows),indent=2,ensure_ascii=False),encoding="utf-8")
+    (out/"probe-results.json").write_text(json.dumps({"model_id":model_id,"device":device,"manifest":build_manifest("safety-probe-lab",model_id=model_id,device=device,config={"max_new_tokens":max_new_tokens}),"warning":"Heuristic marker signals are not validated safety scores.", "results":rows},indent=2,ensure_ascii=False),encoding="utf-8")
     with (out/"probe-results.csv").open("w",newline="",encoding="utf-8") as f:
         fields=["id","category","prompt","response","marker_count","heuristic_signal","marker_hits"]
         w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
