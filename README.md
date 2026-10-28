@@ -2,44 +2,24 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/eliem08/safety-probe-lab/blob/main/colab.ipynb)
 
+A transparent starter set of probes for uncertainty, evidence sufficiency, privacy, instruction conflict, and calibration.
 
-Compare model responses on uncertainty, privacy, instruction-conflict, and evidence-sufficiency probes.
+## Run the probes
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![PyTorch](https://img.shields.io/badge/PyTorch-GPU%20or%20CPU-ee4c2c)
+    pip install -r requirements.txt
+    python probe_eval.py --model-id distilgpt2
+
+Exports outputs/probes/probe-results.json and .csv, including model responses, marker matches, and a triage signal. Use --device cuda for a GPU or --device auto to choose available hardware.
+
+## Evaluation design
+
+The probe set is intentionally small and heuristic. Marker matches can miss a good answer or flag a bad one; they are not a validated safety score, certification, or substitute for human review. Add domain-specific examples, adversarial variants, multiple model runs, and independent annotators before using this in a report.
 
 ## Quickstart
 
-```bash
-python -m venv .venv
-# Windows: .venv\Scripts\activate
-# macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
-python main.py
-```
+    python main.py
 
-Default run uses a tiny randomly initialized model to validate the software path and does not claim useful model behavior.
-
-## Use a pretrained model
-
-Set `NEURONLAB_MODEL` or pass `--real-model --model-id MODEL_ID`. For example, select a small causal language model you are licensed to use:
-
-```bash
-python main.py --real-model --model-id distilgpt2 --text "The sky is"
-```
-
-Model weights take disk, RAM, and often VRAM. The runtime detects CUDA, Apple MPS, or CPU automatically. Install the appropriate PyTorch build for your hardware if needed.
-
-## Google Colab
-
-Open `colab.ipynb` in Colab, select **Runtime → Change runtime type → T4 GPU** when available, then run all cells. The same notebook also runs on CPU, but inference is slower. Free GPU availability and quotas vary.
-
-## Reproducibility and limitations
-
-- Save output artifacts under `outputs/`. Repeat experiments on held-out inputs before making claims.
-- Random demo weights only exercise code paths. They are not suitable for quality, safety, or interpretability conclusions.
-- Do not treat lexical heuristics or activation patterns as reliable evidence of intent or deception.
-- Activation steering may harm other capabilities; record baselines and random controls.
-- Do not expose model inference to the public internet without authentication and resource controls.
+The original demo uses random weights only to validate the code path. Use a pretrained model for meaningful qualitative review.
 
 ## License
 
